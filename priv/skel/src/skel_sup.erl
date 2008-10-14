@@ -41,13 +41,14 @@ upgrade() ->
 %% @spec init([]) -> SupervisorTree
 %% @doc supervisor callback.
 init([]) ->
-    Ip = case os:getenv("WEBMACHINE_IP") of false -> "0.0.0.0"; Any -> Any end,   
+    Ip = skel:config(listen),
+    Port = skel:config(http_port),
+    LogDir = skel:config(log_dir),
     Dispatch = [{[], skel_resource, []}],
-    WebConfig = [
-		 {ip, Ip},
-		 {port, 8000},
-                 {log_dir, "priv/log"},
-		 {dispatch, Dispatch}],
+    WebConfig = [{ip, Ip}
+		 ,{port, Port}
+                 ,{log_dir, LogDir}
+		 ,{dispatch, Dispatch}],
     Web = {webmachine_mochiweb,
 	   {webmachine_mochiweb, start, [WebConfig]},
 	   permanent, 5000, worker, dynamic},
