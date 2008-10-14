@@ -20,7 +20,7 @@ deps_on_path() ->
                 ProjDir = filename:dirname(X),
                 case {filename:basename(X),
                       filename:basename(filename:dirname(ProjDir))} of
-                    {"ebin", "deps"} ->
+                    {"ebin", "lib"} ->
                         [filename:basename(ProjDir) | Acc];
                     _ ->
                         Acc
@@ -33,7 +33,7 @@ deps_on_path() ->
 %%      code path.
 new_siblings(Module) ->
     Existing = deps_on_path(),
-    SiblingEbin = filelib:wildcard(local_path(["deps", "*", "ebin"], Module)),
+    SiblingEbin = filelib:wildcard(local_path(["lib", "*", "ebin"], Module)),
     Siblings = [filename:dirname(X) || X <- SiblingEbin,
                            ordsets:is_element(
                              filename:basename(filename:dirname(X)),

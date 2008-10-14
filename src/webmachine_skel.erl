@@ -32,7 +32,7 @@ skelcopy(DestDir, Name) ->
     skelcopy(src(), DestDir, Name, LDst),
     ok = file:make_symlink(
 	   filename:join(filename:dirname(code:which(?MODULE)), ".."),
-	   filename:join([DestDir, Name, "deps", "webmachine"])).
+	   filename:join([DestDir, Name, "lib", "webmachine"])).
     
 
 %% Internal API

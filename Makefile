@@ -1,5 +1,5 @@
 ERL          ?= erl
-EBIN_DIRS    := $(wildcard deps/*/ebin)
+EBIN_DIRS    := $(wildcard lib/*/ebin)
 APP          := webmachine
 
 all: erl ebin/$(APP).app
