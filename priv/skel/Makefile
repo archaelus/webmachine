@@ -1,8 +1,8 @@
 ERL          ?= erl
-EBIN_DIRS    := $(wildcard deps/*/ebin)
+EBIN_DIRS    := $(wildcard lib/*/ebin)
 APP          := skel
 
-all: erl ebin/$(APP).app
+all: ebin lib erl ebin/$(APP).app
 
 erl:
 	@$(ERL) -pa $(EBIN_DIRS) -noinput +B \
@@ -17,3 +17,9 @@ clean:
 
 ebin/$(APP).app:
 	@cp -v src/$(APP).app $@
+
+ebin:
+	@mkdir ebin
+
+lib:
+	@mkdir lib
