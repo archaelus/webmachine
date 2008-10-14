@@ -8,7 +8,7 @@
     skel_deps,
     skel_resource
   ]},
-  {registered, []},
+  {registered, [skel_sup]},
   {mod, {skel_app, []}},
   {env, []},
-  {applications, [kernel, stdlib, crypto]}]}.
+  {applications, [kernel, stdlib, crypto, webmachine]}]}.
