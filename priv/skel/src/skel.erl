@@ -23,7 +23,7 @@ ensure_started(App) ->
 start() ->
     skel_deps:ensure(),
     application:load(skel),
-    {ok, Deps} = application:get_key(vhreg, applications),
+    {ok, Deps} = application:get_key(skel, applications),
     true = lists:all(fun ensure_started/1, Deps),
     application:start(skel).
 
