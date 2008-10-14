@@ -30,10 +30,21 @@ skelcopy(DestDir, Name) ->
                    N + 1
            end,
     skelcopy(src(), DestDir, Name, LDst),
-    ok = file:make_symlink(
-	   filename:join(filename:dirname(code:which(?MODULE)), ".."),
-	   filename:join([DestDir, Name, "lib", "webmachine"])).
-    
+    Webmachine = unmunge(filename:join(filename:dirname(code:which(?MODULE)), "..")),
+    Target = unmunge(filename:join([DestDir, Name, "lib", "webmachine"])),
+    io:format("Symlinking ~p to ~p.~n", [Webmachine,Target]),
+    ok = file:make_symlink(Webmachine,
+                           Target).
+
+unmunge(Path) ->    
+    Comps = filename:split(Path),
+    filename:join(unmunge2(Comps)).
+
+unmunge2([]) -> [];
+unmunge2([_Dir, ".." | Rest]) ->
+    unmunge2(Rest);
+unmunge2([Dir | Rest]) ->
+    [Dir | unmunge2(Rest)].
 
 %% Internal API
 
