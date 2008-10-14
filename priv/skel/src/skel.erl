@@ -12,15 +12,19 @@ ensure_started(App) ->
 	ok ->
 	    ok;
 	{error, {already_started, App}} ->
-	    ok
+	    ok;
+        Else ->
+            error_logger:error_msg("Couldn't start ~p: ~p", [App, Else]),
+            Else
     end.
 	
 %% @spec start() -> ok
 %% @doc Start the skel server.
 start() ->
     skel_deps:ensure(),
-    ensure_started(crypto),
-    ensure_started(webmachine),
+    application:load(skel),
+    {ok, Deps} = application:get_key(vhreg, applications),
+    true = lists:all(fun ensure_started/1, Deps),
     application:start(skel).
 
 %% @spec stop() -> ok
@@ -28,5 +32,4 @@ start() ->
 stop() ->
     Res = application:stop(skel),
     application:stop(webmachine),
-    application:stop(crypto),
     Res.
