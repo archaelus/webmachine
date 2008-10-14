@@ -1,10 +1,11 @@
+VSN          := 0.1
 ERL          ?= erl
 EBIN_DIRS    := $(wildcard lib/*/ebin)
 APP          := skel
 
-all: ebin lib erl ebin/$(APP).app
+all: erl ebin/$(APP).app
 
-erl:
+erl: ebin lib
 	@$(ERL) -pa $(EBIN_DIRS) -noinput +B \
 	  -eval 'case make:all() of up_to_date -> halt(0); error -> halt(1) end.'
 
@@ -15,7 +16,7 @@ clean:
 	@echo "removing:"
 	@rm -fv ebin/*.beam ebin/*.app
 
-ebin/$(APP).app:
+ebin/$(APP).app: 
 	@cp -v src/$(APP).app $@
 
 ebin:
@@ -23,3 +24,6 @@ ebin:
 
 lib:
 	@mkdir lib
+
+dialyzer: erl
+	@dialyzer -c ebin
