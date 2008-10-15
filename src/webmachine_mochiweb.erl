@@ -39,7 +39,11 @@ start(Options) ->
 	_ ->
 	    ignore
     end,
-    webmachine_sup:start_dispatcher(DispatchList),
+    case webmachine_sup:start_dispatcher(DispatchList) of
+        {error, {already_started, _}} ->
+            webmachine_dispatcher:set_dispatch_list(DispatchList);
+        E -> E
+    end,
     webmachine_dispatcher:set_error_handler(ErrorHandler),
     mochiweb_http:start([{name, ?MODULE}, {loop, fun loop/1} | Options4]).
 
